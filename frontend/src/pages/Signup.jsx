@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import Button from '../components/Button';
 import axios from '../utils/axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 function Signup() {
   const [form, setForm] = useState({ username: '', email: '', password: '' });
   const [error, setError] = useState('');
-  const { setUser } = useAuth();
+  const {user, setUser } = useAuth();
   const navigate = useNavigate();
 
+  if (user) return <Navigate to="/dashboard" />;
   
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -22,7 +23,7 @@ function Signup() {
       const res = await axios.post('/api/auth/register', form);
 
       // Save token
-      sessionStorage.setItem('token', res.data.token);
+      localStorage.setItem('token', res.data.token);
 
       // Set Authorization header for future requests
       axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;

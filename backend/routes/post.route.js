@@ -1,8 +1,8 @@
 import { Router } from "express";
 import protect from "../middleware/auth.middleware.js";
 import { commentOnPost, createPost, deleteComment, deletePost, getAllPost,
- getPageInation, getPostById, likePost,searchPost,
- unlikePost, updatePost } from "../controllers/post.controller.js";
+ getPageInation, getPostById, getPostsHome, likePost,searchPost,
+ unlikePost, updatePost,getUserPostsByUserId } from "../controllers/post.controller.js";
 
 const path = Router()
 
@@ -12,8 +12,10 @@ path.get("/search",protect,searchPost)
 path.get("/paginated",protect,getPageInation)
 //Ceating a post
 path.post("/create-Post",protect,createPost)
-path.get("/all",getAllPost)
-path.get("/:id",getPostById)
+path.get("/all",protect,getAllPost)
+path.get("/homeposts",protect,getPostsHome)
+path.get("/:id",protect,getPostById)
+path.get("/user/:id", protect, getUserPostsByUserId); 
 path.put("/:id",protect,updatePost)
 path.delete("/:id",protect,deletePost)
 

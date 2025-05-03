@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Navigate } from 'react-router-dom';
 import Button from '../components/Button';
 import axios from '../utils/axios';
 import { useAuth } from '../context/AuthContext';
@@ -7,8 +7,10 @@ import { useAuth } from '../context/AuthContext';
 function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
-  const { setUser } = useAuth();
+  const { user, setUser } = useAuth(); // ✅ get user and setUser
   const navigate = useNavigate();
+
+  if (user) return <Navigate to="/" />; // ✅ correct redirect if already logged in
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -19,10 +21,10 @@ function Login() {
     e.preventDefault();
     try {
       const res = await axios.post('/api/auth/login', form);
-      sessionStorage.setItem('token', res.data.token);
+      localStorage.setItem('token', res.data.token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
       setUser(res.data.user);
-      navigate('/dashboard');
+      navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid email or password');
     }

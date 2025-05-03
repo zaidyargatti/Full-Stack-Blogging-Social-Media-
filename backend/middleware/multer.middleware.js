@@ -1,16 +1,18 @@
-// import multer from 'multer';
+// middleware/upload.js
 
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, './uploads'); // specify upload directory
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, Date.now() + '-' + file.originalname);
-//   }
-// });
+import multer from 'multer'
 
-// const upload = multer({ storage });
+import  {CloudinaryStorage} from 'multer-storage-cloudinary';
+import cloudinary from '../config/cloudinary.js';
 
-// export default upload
+const storage = new CloudinaryStorage({
+    cloudinary,
+  params: {
+    folder: 'profile_pictures',
+    allowed_formats: ['jpg', 'jpeg', 'png'],
+    transformation: [{ width: 500, height: 500, crop: 'limit' }],
+  },
+});
 
-// // app.post('/api/post', upload.single('image'), createPost); // Handle image upload
+const upload = multer({ storage });
+export default upload

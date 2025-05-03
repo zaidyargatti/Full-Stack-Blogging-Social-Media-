@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Button from '../components/Button';
 import axios from '../utils/axios';
 import { useNavigate } from 'react-router-dom';
@@ -6,19 +6,15 @@ import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
 
 function CreatePost() {
-  const { user, loading, } = useAuth(); // Ensure the `checkAuth` method is available to validate the user's session
-  const [form, setForm] = useState({ title: '', description: '' });
+  const { user, loading } = useAuth();
+  const [form, setForm] = useState({ title: '', content: '' }); // ✅ Corrected to content
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  
-
-  // If the user is still loading, show a loading state
   if (loading) {
     return <div className="text-center py-20">Loading...</div>;
   }
 
-  // If the user is not authenticated, show the message
   if (!user) {
     return <div>You must be logged in to create a post.</div>;
   }
@@ -59,9 +55,9 @@ function CreatePost() {
             className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <textarea
-            name="description"
-            placeholder="Post Description"
-            value={form.description}
+            name="content"  // ✅ corrected
+            placeholder="Post Content"
+            value={form.content}
             onChange={handleChange}
             rows="6"
             className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"

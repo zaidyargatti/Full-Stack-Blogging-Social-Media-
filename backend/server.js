@@ -1,47 +1,59 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import connect_DB from "./config/db.js";
 import express from "express";
+import http from "http";
+import { Server } from "socket.io";
+import dotenv from "dotenv";
 import cors from "cors";
-import route from "./routes/user.route.js";
-import session from 'express-session';
-import path from "./routes/post.route.js";
-import notify from "./routes/notifications.route.js";
+import connect_DB from "./config/db.js";
+import authRoutes from "./routes/user.route.js";
+import postRoutes from "./routes/post.route.js";
+import notificationRoutes from "./routes/notifications.route.js";
+
 dotenv.config();
+
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173", // Frontend
+    credentials: true,
+  },
+});
 
 connect_DB();
 
-const FRONTEND_ORIGIN = 'http://localhost:5173';
+const onlineUsers = new Map();
 
-app.use(cors({
-  origin: FRONTEND_ORIGIN,
-  credentials: true, // Allow sending cookies
-}));
-app.use(express.json());
+io.on("connection", (socket) => {
+  console.log("New client connected:", socket.id);
 
-app.use(session({
-    secret: 'your_secret_key', // use a strong secret in prod
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: false, // set to true in production with HTTPS
-      sameSite: 'lax', // 'none' if using cross-site cookies with HTTPS
+  socket.on("register", (userId) => {
+    onlineUsers.set(userId, socket.id);
+    console.log(`Registered user ${userId} with socket ${socket.id}`);
+  });
+
+  socket.on("disconnect", () => {
+    for (let [uid, sid] of onlineUsers.entries()) {
+      if (sid === socket.id) {
+        onlineUsers.delete(uid);
+        break;
+      }
     }
-  }));
-
-// USER ROUTES 
-app.use("/api/auth", route);
-
-// POST ROUTES 
-app.use("/api/post", path);
-
-// NOTIFICATION ROUTES 
-app.use("/api/notification", notify);
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`The server is listening to http://localhost:${PORT}`);
+    console.log("Client disconnected:", socket.id);
+  });
 });
 
+// Expose IO in app for controllers
+app.set("io", io);
+app.set("onlineUsers", onlineUsers);
+
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(express.json());
+
+app.use("/api/auth", authRoutes);
+app.use("/api/post", postRoutes);
+app.use("/api/notification", notificationRoutes);
+
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});

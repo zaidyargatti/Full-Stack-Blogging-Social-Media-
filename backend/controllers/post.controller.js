@@ -32,19 +32,37 @@ const createPost = async (req, res) => {
 
 const getAllPost = async (req, res) => {
     try {
-        const posts = await Post.find().populate("author", "username email").sort({ createdAt: -1 })
-        res.status(200)
-            .json({
-                message: "Sucessfully Fetched",
-                posts
-            })
+        const posts = await Post.find({ author: req.user._id })
+            .populate("author", "username email")
+            .sort({ createdAt: -1 });
+
+        res.status(200).json({
+            message: "Successfully Fetched",
+            posts,
+        });
     } catch (error) {
-        res.status(500)
-            .json({
-                message: error.message
-            })
+        res.status(500).json({
+            message: error.message,
+        });
     }
-}
+};
+
+const getPostsHome = async (req, res) => {
+    try {
+        const posts = await Post.find()
+            .populate("author", "username email")
+            .sort({ createdAt: -1 });
+
+        res.status(200).json({
+            message: "Successfully Fetched",
+            posts,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: error.message,
+        });
+    }
+};
 
 const getPostById = async (req, res) => {
     try {
@@ -165,8 +183,22 @@ const likePost = async (req, res) => {
                 post: post._id,
                 isread: false
             });
+            const io = req.app.get("io");
+            const onlineUsers = req.app.get("onlineUsers");
+            
+            const receiverSocket = onlineUsers.get(post.author._id.toString());
+            if (receiverSocket) {
+              io.to(receiverSocket).emit("newNotification", {
+                type: "like",
+                sender: req.user.username,
+                senderId: req.user._id,
+                post: { _id: post._id, title: post.title },
+              });
+            }
+            console.log(`Sending LIKE notification to socket ${receiverSocket}`);
 
-            console.log("Notification Created:", notification);
+            
+            
         } else if (!post.author) {
             console.log("Post Author Not Found!");
             return res.status(400).json({
@@ -230,44 +262,54 @@ const unlikePost = async (req, res) => {
 
 const commentOnPost = async (req, res) => {
     try {
-        const post = await Post.findById(req.params.id)
-
-        if (!post) {
-            res.status(404)
-                .json({
-                    message: "Post Not Found!"
-                })
+      const post = await Post.findById(req.params.id).populate('author');
+  
+      if (!post) {
+        return res.status(404).json({ message: "Post Not Found!" });
+      }
+  
+      const NewComment = {
+        user: req.user._id,
+        text: req.body.text,
+        createdAt: new Date(),
+      };
+  
+      post.comment.push(NewComment);
+      await post.save();
+  
+      
+      if (post.author._id.toString() !== req.user._id.toString()) {
+        await Notification.create({
+          user: post.author._id,
+          sender: req.user._id,
+          type: "comment",
+          post: post._id,
+        });
+  
+   
+        const io = req.app.get("io");
+        const onlineUsers = req.app.get("onlineUsers");
+        const receiverSocket = onlineUsers.get(post.author._id.toString());
+  
+        if (receiverSocket) {
+          io.to(receiverSocket).emit("newNotification", {
+            type: "comment",
+            sender: req.user.username,
+            post: { _id: post._id, title: post.title },
+          });
         }
-        const NewComment = {
-            user: req.user._id,
-            text: req.body.text,
-            createdAt: new Date()
-        }
-
-        post.comment.push(NewComment)
-        await post.save()
-
-       await  Notification.create({
-          user:post.author,
-          sender:req.user._id,
-          type:"comment",
-          post:post._id
-        })
-
-        res.status(200)
-            .json({
-                message: "Comment Added Sucessfully",
-                comment: post.comment
-            })
-
+      }
+  
+      res.status(200).json({
+        message: "Comment Added Successfully",
+        comment: post.comment,
+      });
+  
     } catch (error) {
-        res.status(500)
-            .json({
-                message: error.message
-            })
+      res.status(500).json({ message: error.message });
     }
-}
-
+  };
+  
 
 const deleteComment = async (req, res) => {
     try {
@@ -376,6 +418,20 @@ const getPageInation = async(req,res)=>{
     }
 }
 
+const getUserPostsByUserId = async (req, res) => {
+    try {
+      const { id } = req.params;
+  
+      const posts = await Post.find({ author: id }).populate("author", "username profilePic");
+  
+      res.status(200).json({
+        message: "User posts fetched successfully",
+        posts,
+      });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
 
 export {
     createPost,
@@ -388,5 +444,7 @@ export {
     commentOnPost,
     deleteComment,
     searchPost,
-    getPageInation
+    getPageInation,
+    getPostsHome,
+    getUserPostsByUserId
 }

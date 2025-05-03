@@ -19,6 +19,10 @@ const UserSchema = new mongoose.Schema({
         required:[true,"Password is required!"],
         minlength:6
     },
+    profilePic: {
+        type: String, 
+        default: "",  
+      },
     followers:[{
         type : mongoose.Schema.Types.ObjectId,
         ref:"User"

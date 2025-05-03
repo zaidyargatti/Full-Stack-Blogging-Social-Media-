@@ -1,16 +1,18 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-function ProtectedRoute() {
-  const { user } = useAuth();
+function ProtectedRoute({ children }) {
+  const { user, loading } = useAuth();
 
-  if (!user) {
-    // Redirect to login page if not logged in
-    return <Navigate to="/login" replace />;
+  if (loading) {
+    return <div className="text-center py-20">Loading...</div>;
   }
 
-  // Allow access to the protected route
-  return <Outlet />;
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  return children;
 }
 
 export default ProtectedRoute;

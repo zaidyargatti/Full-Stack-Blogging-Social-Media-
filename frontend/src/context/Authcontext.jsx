@@ -1,46 +1,44 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from '../utils/axios';
 
-// 1. Create the context
 const AuthContext = createContext();
 
-// 2. Create a provider component
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // loading state added
 
-  // 3. On first load, check if token exists and fetch user
   useEffect(() => {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       fetchUser();
+    } else {
+      setLoading(false);
     }
   }, []);
-
   const fetchUser = async () => {
     try {
-      const res = await axios.get('/api/auth/check');
+      const res = await axios.get('/api/auth/check'); // ✅ secure check
       setUser(res.data.user);
     } catch (err) {
-      console.error('User fetch failed:', err);
-      sessionStorage.removeItem('token');
-      delete axios.defaults.headers.common['Authorization'];
-      setUser(null);
+      console.error('Auth check failed:', err);
+      logout(); 
+    } finally {
+      setLoading(false);
     }
   };
 
   const logout = () => {
-    sessionStorage.removeItem('token');
+    localStorage.removeItem('token');
     delete axios.defaults.headers.common['Authorization'];
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, logout }}>
+    <AuthContext.Provider value={{ user, setUser, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// 4. Create a small hook for easy usage
 export const useAuth = () => useContext(AuthContext);
