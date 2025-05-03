@@ -16,8 +16,8 @@ function Navbar() {
 
   return (
     <nav className="bg-white shadow-md px-6 py-3 flex items-center justify-between">
-      <Link to="/" className="text-xl font-bold text-blue-600">
-        BlogApp
+      <Link to="/" className="text-xl font-bold text-black-600">
+        Blog
       </Link>
 
       <div className="flex items-center gap-6">
