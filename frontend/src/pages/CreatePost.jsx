@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import Button from '../components/Button';
-import axios from './utils/Axios';
+import axios from '../utils/Axios';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import { useAuth } from '../context/Authcontext';
+import { useAuth } from '../context/AuthContext';
 
 function CreatePost() {
   const { user, loading } = useAuth();

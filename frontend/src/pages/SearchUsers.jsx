@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import axios from './utils/Axios';
+import axios from '../utils/Axios';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import { useAuth } from '../context/Authcontext';
+import { useAuth } from '../context/AuthContext';
 
 
 function SearchUsers() {

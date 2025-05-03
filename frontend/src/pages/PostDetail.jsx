@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from './utils/Axios';
+import axios from '../utils/Axios';
 import Navbar from '../components/Navbar';
-import { useAuth } from '../context/Authcontext';
+import { useAuth } from '../context/AuthContext';
 
 function PostDetail() {
   const { id } = useParams();
