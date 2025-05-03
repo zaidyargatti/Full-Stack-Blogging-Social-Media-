@@ -1,2 +1,45 @@
-node_modules
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
 .env
+.env.local
+.env.*.local
+
+# OS-related
+.DS_Store
+Thumbs.db
+
+# Build output
+dist/
+build/
+out/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# IDE configs
+.vscode/
+.idea/
+
+# Optional: PM2 process files
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage output
+coverage/
+
+# NPM lockfile (if using yarn, remove this)
+package-lock.json
+
+# Yarn lockfile (if using npm, remove this)
+yarn.lock
