@@ -14,7 +14,9 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Frontend
+    origin:[ "http://localhost:5173","full-stack-blogging-social-media.vercel.app",
+      "full-stack-blogging-soci-git-dac732-9928zaid-gmailcoms-projects.vercel.app",
+      "full-stack-blogging-social-media-msnwq7jqo.vercel.app"],
     credentials: true,
   },
 });
@@ -46,7 +48,9 @@ io.on("connection", (socket) => {
 app.set("io", io);
 app.set("onlineUsers", onlineUsers);
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin:[ "http://localhost:5173","full-stack-blogging-social-media.vercel.app",
+  "full-stack-blogging-soci-git-dac732-9928zaid-gmailcoms-projects.vercel.app","full-stack-blogging-social-media-msnwq7jqo.vercel.app"],
+   credentials: true }));
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
