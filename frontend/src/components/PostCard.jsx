@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { useAuth } from '../context/Authcontext';
-import axios from '../utils/axios';
+import axios from './utils/Axios';
 
 function PostCard({ post, showActions = false, onPostDeleted, onPostUpdated }) {
   const navigate = useNavigate();

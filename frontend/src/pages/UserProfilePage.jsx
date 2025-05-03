@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from '../utils/axios';
+import axios from './utils/Axios';
 import PublicProfileCard from '../components/PublicProfileCard';
 import PostCard from '../components/PostCard';
 import Navbar from '../components/Navbar';

@@ -1,7 +1,7 @@
 import { FiSettings } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/Authcontext";
-import axios from "../utils/axios";
+import axios from './utils/Axios';
 
 const UserProfileCard = () => {
   const { user, setUser } = useAuth();

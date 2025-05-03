@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import Button from '../components/Button';
-import axios from '../utils/axios';
+import axios from './utils/Axios';
 import { useNavigate,Navigate } from 'react-router-dom';
-import { useAuth } from '../context/Authcontext';
+import { useAuth } from './context/Authcontext';
 
 function Signup() {
   const [form, setForm] = useState({ username: '', email: '', password: '' });

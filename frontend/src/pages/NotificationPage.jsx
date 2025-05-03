@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from '../utils/axios';
+import axios from './utils/Axios';
 import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
 import { useSocket } from '../context/SocketContext';

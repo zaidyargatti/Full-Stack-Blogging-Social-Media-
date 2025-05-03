@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import PostCard from '../components/PostCard';
-import axios from '../utils/axios';
+import axios from './utils/Axios';
 import UserProfileCard from './UserProfileCard';
 
 function Dashboard() {

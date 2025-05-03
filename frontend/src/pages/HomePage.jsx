@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "../utils/axios";
+import axios from './utils/Axios';
 import PostCard from "../components/PostCard";
 import Navbar from "../components/Navbar";
 
