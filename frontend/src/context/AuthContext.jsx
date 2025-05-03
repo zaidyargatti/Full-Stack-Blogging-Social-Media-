@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true); // loading state added
 
   useEffect(() => {
+    
     const token = localStorage.getItem('token');
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -27,6 +28,8 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   };
+  console.log("✅ AuthContext.jsx loaded correctly");
+
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -35,10 +38,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
+    
     <AuthContext.Provider value={{ user, setUser, logout, loading }}>
       {children}
     </AuthContext.Provider>
+    
   );
+
 };
 
 export const useAuth = () => useContext(AuthContext);
