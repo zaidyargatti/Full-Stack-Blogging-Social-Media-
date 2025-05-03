@@ -3,7 +3,7 @@ import axios from '../utils/axios';
 import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
 import { useSocket } from '../context/SocketContext';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/Authcontext';
 import { useNotification } from '../context/NotificationContext';
 
 function NotificationPage() {

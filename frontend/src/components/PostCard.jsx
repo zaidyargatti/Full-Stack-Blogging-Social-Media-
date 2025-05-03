@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/Authcontext';
 import axios from '../utils/axios';
 
 function PostCard({ post, showActions = false, onPostDeleted, onPostUpdated }) {

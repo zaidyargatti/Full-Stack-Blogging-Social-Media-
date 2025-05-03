@@ -1,6 +1,6 @@
 import { FiSettings } from "react-icons/fi";
 import { useEffect, useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/Authcontext";
 import axios from "../utils/axios";
 
 const UserProfileCard = () => {

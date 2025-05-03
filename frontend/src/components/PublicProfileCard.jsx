@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from '../utils/axios';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/Authcontext';
 import PostCard from './PostCard';
 import { useSocket } from '../context/SocketContext';
 
