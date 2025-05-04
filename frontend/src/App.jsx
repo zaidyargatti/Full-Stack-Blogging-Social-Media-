@@ -12,6 +12,7 @@ import NotificationPage from './pages/NotificationPage';
 import PublicProfilePage from './pages/PublicProfilePage';
 import NotificationPopup from './components/NotificationPopup';
 
+
 function App() {
   return (
     <>

@@ -80,7 +80,7 @@ function PostCard({ post, showActions = false, onPostDeleted, onPostUpdated }) {
           <h3 className="text-lg font-semibold text-gray-800 mb-2">{post.title}</h3>
           <p className="text-sm text-gray-600 mb-2">
             {snippet}
-            {isLong && <span className="text-blue-600 hover:underline ml-1">Read more</span>}
+            {isLong && <span className="text-grey-600 hover:underline ml-1">Read more</span>}
           </p>
         </div>
       )}

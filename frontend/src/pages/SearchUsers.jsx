@@ -43,7 +43,7 @@ function SearchUsers() {
           placeholder="Search by username or email..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full border p-3 rounded mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full border p-3 border-gray-400  rounded-xl mb-6 focus:outline-none "
         />
 
         {filtered.length > 0 ? (

@@ -15,25 +15,25 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-white shadow-md px-6 py-3 flex items-center justify-between">
+    <nav className=" px-6 py-3 flex items-center justify-between">
       <Link to="/" className="text-xl font-bold text-black-600">
         Blog
       </Link>
 
       <div className="flex items-center gap-6">
-        <Link to="/search-users" className="flex items-center gap-1 text-gray-700 hover:text-blue-600">
+        <Link to="/search-users" className="flex items-center gap-1 text-gray-700 hover:text-[#050B1E]">
           <FiSearch />
           <span className="hidden sm:inline">Search User</span>
         </Link>
 
-        <Link to="/notifications" className="relative text-gray-700 hover:text-blue-600">
+        <Link to="/notifications" className="relative text-gray-700 hover:text-[#050B1E]">
           <FiBell className="text-xl" />
           {hasUnread && (
             <span className="absolute top-0 right-0 w-2 h-2 bg-red-600 rounded-full" />
           )}
         </Link>
 
-        <Link to="/dashboard" className="flex items-center gap-1 text-gray-700 hover:text-gray-900">
+        <Link to="/dashboard" className="flex items-center gap-1 text-gray-700 hover:text-[#050B1E]">
           {user?.profilePic ? (
             <img
               src={user.profilePic}
