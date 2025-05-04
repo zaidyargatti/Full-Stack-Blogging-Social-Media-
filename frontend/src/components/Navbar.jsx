@@ -38,7 +38,7 @@ function Navbar() {
             <img
               src={user.profilePic}
               alt="Profile"
-              className="w-8 h-8 rounded-full object-cover border border-gray-300"
+              className="w-8 h-8 rounded-full object-cover border border-black"
             />
           ) : (
             <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-xs text-white">
