@@ -21,7 +21,7 @@ export const NotificationProvider = ({ children }) => {
       setTimeout(() => {
         setShowPopup(false);
         setPopupContent(null);
-      }, 5000);
+      }, 10000);
     };
 
     socket.on('newNotification', handleNewNotification);
