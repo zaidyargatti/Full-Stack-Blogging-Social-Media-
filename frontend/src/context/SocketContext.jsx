@@ -11,7 +11,7 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (user?._id) {
-      const newSocket = io('http://localhost:5000', {
+      const newSocket = io('https://full-stack-blogging-social-media.onrender.com', {
         withCredentials: true,
       });
 
